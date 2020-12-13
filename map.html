@@ -9,74 +9,130 @@
     #target {
       width: 700px;
       height: 400px;
-      float:left;
-      margin-right:10px;
+      float: left;
+      margin-right: 10px
     }
-    .my-menu {
-  color:#ddd;
-  cursor:pointer;
-  padding:5px;
-}
-.top {
-  cursor:pointer;
-  /* border: inset 10px #ff0000; */
-  display:inline-block;
-  /* padding:5px; */
-  padding: 0.5em 1em;
-    /* margin: 2em 0; */
-    color: #00BCD4;
-    background: #e4fcff;/*背景色*/
-    border-top: solid 6px #1dc1d6;
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);/*影*/
-}
-.top:hover {
-  opacity:0.8;
-  background:#ddd;
-}
 
+    .top {
+      cursor: pointer;
+      /* border: inset 10px #ff0000; */
+      display: inline-block;
+      /* padding:5px; */
+      padding: 0.5em 1em;
+      /* margin: 2em 0; */
+      color: #00BCD4;
+      background: #e4fcff;
+      /*背景色*/
+      border-top: solid 6px #1dc1d6;
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);
+      /*影*/
+    }
+
+    .top:hover {
+      opacity: 0.8;
+      background: #ddd;
+    }
+
+    .result,
+    .result2 {
+      display: inline-grid;
+    }
   </style>
 </head>
 
 <body>
   <div id="target"></div>
 
+  <ul id="info">
+    <li>
+      COCO HOUSE
+    </li>
+  </ul>
+
   <strong>まだテスト！！！！！！</strong>
 
-  <p id ="result">Click to 緯度</p>
-  <p id ="result2">Click to 経度</p>
+  <p id="result">Click to 緯度</p>
+  <p id="result2">Click to 経度</p>
   <!-- <i class="fas fa-align-justify"></i> -->
-  <a href="index.html"><div class="top">top page</div></a>
+  <a href="index.html">
+    <div class="top">top page</div>
+  </a>
 
-  <script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key=AIzaSyCLQ82FGvykwMLGP5XQmmc0ubFwsjMYMK0&callback=initMap"
+  <script
+    src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key=AIzaSyCLQ82FGvykwMLGP5XQmmc0ubFwsjMYMK0&callback=initMap"
     async defer></script>
   <script>
     function initMap() {
       'use strict';
 
-      var target = document.getElementById('target');
-      var map;
-      var tokyo = { lat: 24.6682144, lng: 124.7028189 };
+      const target = document.getElementById('target');
+      const tarama = { lat: 24.668682100707706, lng: 124.70253061782172 };
+      let map;
+      let marker;
+      let infoWindow;
 
       map = new google.maps.Map(target, {
-        center: tokyo,
+        center: tarama,
         // zoom: 0
         // zoom: 6
-        zoom: 18,
+        zoom: 16,
         disableDefaultUI: true,
         zoomControl: true,
         // mapTypeId: 'satellite'
         mapTypeId: 'hybrid',
-        clickableIcons: false
+        clickableIcons: false,
       });
+
+      marker = new google.maps.Marker({
+        position: tarama,
+        map: map,
+        // icon: {
+        //   url: 'image/Pin.png',
+        //   scaledSize: new google.maps.Size(29, 29)
+        // },
+        animation: google.maps.Animation.BOUNCE,
+        // animation: google.maps.Animation.DROP,
+      });
+
+      const info = document.getElementById('info');
+
+       infoWindow = new google.maps.InfoWindow({
+        position: tarama,
+        // content: 'Hello! Hello! Hello! Hello! Hello!'
+        // content: '<strong>Hello!</strong> Hello! Hello! Hello! Hello!'
+        content: info.textContent,
+        maxWidth: 100,
+        // maxHeight:50,
+      });
+
+      infoWindow.open(map);
+
 
       const result = document.getElementById('result')
       const result2 = document.getElementById('result2')
-      map.addListener('click',(e)=>{
+
+      map.addListener('click', (e) => {
         result.textContent = `経度は:${e.latLng.lat()}`;
         result2.textContent = `緯度は:${e.latLng.lng()}`;
         console.log(e.latLng.toString());
+        // map.setCenter(e.latLng);
+        map.panTo(e.latLng);
+
+        marker = new google.maps.Marker({
+          position: e.latLng,
+          map: map,
+          title: e.latLng.toString(),
+          animation: google.maps.Animation.BOUNCE,
+          // animation: google.maps.Animation.DROP,
+        });
+
+        marker.addListener('click', () => {
+          marker.setMap(null);
+        });
 
       });
+
+
 
     }
   </script>
