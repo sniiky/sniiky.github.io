@@ -6,6 +6,13 @@ html,body{
 .menu {
   display:flex;
   float:right;
+  /* color:#ddd; */
+}
+
+.my-menu {
+  color:#ddd;
+  cursor:pointer;
+  padding:5px;
 }
 
 /* .my-menu {
