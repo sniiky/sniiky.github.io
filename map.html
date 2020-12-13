@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>My Map</title>
+  <style>
+    #target {
+      width: 700px;
+      height: 400px;
+      float:left;
+      margin-right:10px;
+    }
+    .my-menu {
+  color:#ddd;
+  cursor:pointer;
+  padding:5px;
+}
+.top {
+  cursor:pointer;
+  /* border: inset 10px #ff0000; */
+  display:inline-block;
+  /* padding:5px; */
+  padding: 0.5em 1em;
+    /* margin: 2em 0; */
+    color: #00BCD4;
+    background: #e4fcff;/*背景色*/
+    border-top: solid 6px #1dc1d6;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);/*影*/
+}
+.top:hover {
+  opacity:0.8;
+  background:#ddd;
+}
+
+  </style>
+</head>
+
+<body>
+  <div id="target"></div>
+
+  <strong>まだテスト！！！！！！</strong>
+
+  <p id ="result">Click to 緯度</p>
+  <p id ="result2">Click to 経度</p>
+  <!-- <i class="fas fa-align-justify"></i> -->
+  <a href="index.html"><div class="top">top page</div></a>
+
+  <script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key=AIzaSyCLQ82FGvykwMLGP5XQmmc0ubFwsjMYMK0&callback=initMap"
+    async defer></script>
+  <script>
+    function initMap() {
+      'use strict';
+
+      var target = document.getElementById('target');
+      var map;
+      var tokyo = { lat: 24.6682144, lng: 124.7028189 };
+
+      map = new google.maps.Map(target, {
+        center: tokyo,
+        // zoom: 0
+        // zoom: 6
+        zoom: 18,
+        disableDefaultUI: true,
+        zoomControl: true,
+        // mapTypeId: 'satellite'
+        mapTypeId: 'hybrid',
+        clickableIcons: false
+      });
+
+      const result = document.getElementById('result')
+      const result2 = document.getElementById('result2')
+      map.addListener('click',(e)=>{
+        result.textContent = `経度は:${e.latLng.lat()}`;
+        result2.textContent = `緯度は:${e.latLng.lng()}`;
+        console.log(e.latLng.toString());
+
+      });
+
+    }
+  </script>
+</body>
+
+</html>
