@@ -7,8 +7,8 @@
   <title>My Map</title>
   <style>
     #target {
-      width: 700px;
-      height: 400px;
+      width: 500px;
+      height: 350px;
       float: left;
       margin-right: 10px
     }
@@ -43,13 +43,14 @@
 <body>
   <div id="target"></div>
 
-  <ul id="info">
+  <!-- <ul id="info">
     <li>
       COCO HOUSE
     </li>
-  </ul>
+  </ul> -->
 
-  <strong>まだテスト！！！！！！</strong>
+  <input type="text" id="address" placeholder="type address!">
+  <button id="search">Search</button>
 
   <p id="result">Click to 緯度</p>
   <p id="result2">Click to 経度</p>
@@ -73,8 +74,6 @@
 
       map = new google.maps.Map(target, {
         center: tarama,
-        // zoom: 0
-        // zoom: 6
         zoom: 16,
         disableDefaultUI: true,
         zoomControl: true,
@@ -94,15 +93,11 @@
         // animation: google.maps.Animation.DROP,
       });
 
-      const info = document.getElementById('info');
 
-       infoWindow = new google.maps.InfoWindow({
+      infoWindow = new google.maps.InfoWindow({
         position: tarama,
-        // content: 'Hello! Hello! Hello! Hello! Hello!'
-        // content: '<strong>Hello!</strong> Hello! Hello! Hello! Hello!'
-        content: info.textContent,
+        content: 'COCO HOUSE',
         maxWidth: 100,
-        // maxHeight:50,
       });
 
       infoWindow.open(map);
@@ -119,7 +114,7 @@
         map.panTo(e.latLng);
 
         marker = new google.maps.Marker({
-          position: e.latLng,
+          // position: e.latLng,
           map: map,
           title: e.latLng.toString(),
           animation: google.maps.Animation.BOUNCE,
@@ -130,7 +125,60 @@
           marker.setMap(null);
         });
 
+        geocoder.geocode({
+          location: e.latLng,
+        }, function (results, status) {
+          if (status !== 'OK') {
+            alert('Failed: ' + status)
+            return;
+          }
+          if (results[0]) {
+            const marker2 = new google.maps.Marker({
+              position: e.latLng,
+              map: map,
+              title: results[0].formatted_address,
+              animation: google.maps.Animation.DROP,
+            });
+            marker2.addListener('click', () => {
+              marker2.setMap(null);
+            });
+
+          } else {
+            alert('No result');
+            return;
+          }
+          // results[0].formatted_address
+        })
+
+
       });
+
+      // Geocoding
+      const search = document.getElementById('search');
+      const address = document.getElementById('address');
+      const geocoder = new google.maps.Geocoder();
+
+      search.addEventListener('click', () => {
+        geocoder.geocode({
+          address: document.getElementById('address').value
+        }, function (results, status) {
+          if (status !== 'OK') {
+            alert('Failed: ' + status);
+            return;
+          }
+          // results[0].geometry.location
+          if (results[0]) {
+            new google.maps.Map(target, {
+              center: results[0].geometry.location,
+              zoom: 15
+            });
+          } else {
+            alert('No results found');
+            return;
+          }
+        });
+      });
+
 
 
 
