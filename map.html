@@ -107,8 +107,8 @@
       const result2 = document.getElementById('result2')
 
       map.addListener('click', (e) => {
-        result.textContent = `経度は:${e.latLng.lat()}`;
-        result2.textContent = `緯度は:${e.latLng.lng()}`;
+        result.textContent = `緯度は:${e.latLng.lat()}です`;
+        result2.textContent = `経度は:${e.latLng.lng()}です`;
         console.log(e.latLng.toString());
         // map.setCenter(e.latLng);
         map.panTo(e.latLng);
