@@ -1,10 +1,12 @@
-html,body{
+body{
   overflow: hidden;
   user-select: none;
+  background:url(../image/bg.jpg);
+  background-size:cover;
 }
 
 .menu {
-  display:flex;
+  /* display:flex; */
   float:right;
   /* color:#ddd; */
 }
@@ -14,12 +16,6 @@ html,body{
   cursor:pointer;
   padding:5px;
 }
-
-/* .my-menu {
-  color:#ddd;
-  cursor:pointer;
-  padding:5px;
-} */
 
 .toppage,.hotel,.map {
   /* padding:10px; */
